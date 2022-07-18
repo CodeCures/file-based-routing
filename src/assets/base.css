@@ -1,0 +1,15 @@
+body{
+    display: block !important;
+}
+
+[data-v-app] {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
