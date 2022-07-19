@@ -1,8 +1,25 @@
-<script setup>
-import NavBar from '../components/NavBar.vue';
+<script >
 import FeaturedPost from '../components/FeaturedPost.vue';
 import PostCard from '../components/PostCard.vue';
+import { getPosts } from '../service/PostService';
+import { getPostImage } from '../service/ImageService';
 
+export default {
+    name: "index",
+    components: {
+        NavBar,
+        FeaturedPost,
+        PostCard
+    },
+    data(){
+        return {
+            posts: []
+        }
+    },
+    mounted(){
+        getPosts(6).then(res => this.posts = res.data);
+    }
+}
 </script>
 
 <template>
@@ -15,67 +32,10 @@ import PostCard from '../components/PostCard.vue';
         <!-- Featured Post -->
         <FeaturedPost />
         <div class="grid grid-cols-12 pb-10 sm:px-5 gap-x-8 gap-y-16">
-            <PostCard />
-            <div class="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4">
-                <a href="#_" class="block">
-                    <img class="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56" src="https://cdn.devdojo.com/images/may2021/workout.jpg">
-                </a>
-                <div class="bg-pink-500 flex items-center px-3 py-1.5 leading-none rounded-full text-xs font-medium uppercase text-white">
-                    <span>Health</span>
-                </div>
-                <h2 class="text-lg font-bold sm:text-xl md:text-2xl">The Healther Version of Yourself</h2>
-                <p class="text-sm text-gray-500">If you want to excel in life and become a better version of yourself, you'll need to upgrade your life.</p>
-                <p class="pt-2 text-xs font-medium"><a href="#_" class="mr-1 underline">Fred Jones</a> · <span class="mx-1">April 10, 2021</span> · <span class="mx-1 text-gray-600">3 min. read</span></p>
-            </div>
-
-            <div class="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4">
-                <a href="#_" class="block">
-                    <img class="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56" src="https://cdn.devdojo.com/images/may2021/food.jpg">
-                </a>
-                <div class="bg-red-500 flex items-center px-3 py-1.5 leading-none rounded-full text-xs font-medium uppercase text-white ">
-                    <span>Food</span>
-                </div>
-                <h2 class="text-lg font-bold sm:text-xl md:text-2xl">Enjoy the Meals of the Kings</h2>
-                <p class="text-sm text-gray-500">Take the time to enjoy the life that you've created. It's totally fine to live like kings and eat like royalty.</p>
-                <p class="pt-2 text-xs font-medium"><a href="#_" class="mr-1 underline">Mike Roberts</a> · <span class="mx-1">April 6, 2021</span> · <span class="mx-1 text-gray-600">3 min. read</span></p>
-            </div>
-
-            <div class="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4">
-                <a href="#_" class="block">
-                    <img class="object-cover w-full mb-2 overflow-hidden rounded-lg max-h-56" src="https://cdn.devdojo.com/images/may2021/books.jpg">
-                </a>
-                <div class="bg-blue-500 flex items-center px-3 py-1.5 leading-none rounded-full text-xs font-medium uppercase text-white ">
-                    <span>Motivation</span>
-                </div>
-                <h2 class="text-lg font-bold sm:text-xl md:text-2xl">Writing for Success</h2>
-                <p class="text-sm text-gray-500">Writing about your plans for success is extremely helpful for yourself and it will allow you to share your story.</p>
-                <p class="pt-2 text-xs font-medium"><a href="#_" class="mr-1 underline">Tom Johnson</a> · <span class="mx-1">May 25, 2021</span> · <span class="mx-1 text-gray-600">3 min. read</span></p>
-            </div>
-
-            <div class="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4">
-                <a href="#_" class="block">
-                    <img class="object-cover w-full mb-2 overflow-hidden rounded-lg max-h-56" src="https://cdn.devdojo.com/images/may2021/clock.jpg">
-                </a>
-                <div class="bg-gray-800 flex items-center px-3 py-1.5 leading-none rounded-full text-xs font-medium uppercase text-white ">
-                    <span>Business</span>
-                </div>
-                <h2 class="text-lg font-bold sm:text-xl md:text-2xl">Simple Time Management</h2>
-                <p class="text-sm text-gray-500">Managing your time can make the difference between getting ahead in life or staying exactly where you are.</p>
-                <p class="pt-2 text-xs font-medium"><a href="#_" class="mr-1 underline">Scott Reedman</a> · <span class="mx-1">May 18, 2021</span> · <span class="mx-1 text-gray-600">3 min. read</span></p>
-            </div>
-
-            <div class="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4">
-                <a href="#_" class="block">
-                    <img class="object-cover w-full mb-2 overflow-hidden rounded-lg max-h-56" src="https://cdn.devdojo.com/images/may2021/lemons.jpg">
-                </a>
-                <div class="bg-yellow-400 flex items-center px-3 py-1.5 leading-none rounded-full text-xs font-medium uppercase text-white ">
-                    <span>Nutrition</span>
-                </div>
-                <h2 class="text-lg font-bold sm:text-xl md:text-2xl">The Fruits Life</h2>
-                <p class="text-sm text-gray-500">Take a moment and enjoy to enjoy the many fruits of life. Relaxation and a healthy diet can go a long way.</p>
-                <p class="pt-2 text-xs font-medium"><a href="#_" class="mr-1 underline">Jake Caldwell</a> · <span class="mx-1">May 15, 2021</span> · <span class="mx-1 text-gray-600">3 min. read</span></p>
-            </div>
-
+            <PostCard v-for="(post, index) in posts" 
+            :key="post.id" 
+            :post="post" 
+            />
         </div>
     </div>
 </section>
