@@ -1,11 +1,19 @@
-const { default: axios } = require("axios");
+import axios from "axios";
+
 
 const instance = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com/posts',
+    baseURL: 'https://jsonplaceholder.typicode.com',
     timeout: 3000,
     headers: {'Content-Type': 'application/json'}
 });
 
-const getPost = () => {
-
+export const getPost = async () => {
+    try {
+        const response = await instance.get({
+            url: '/posts',
+        });
+        console.log(response.data);
+    } catch(error) {
+       throw new Error('An error occured');
+    }
 }
